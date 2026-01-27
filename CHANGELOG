@@ -1,0 +1,9 @@
+## [1.0.0] - 2026-01-26
+
+The start of that thing.
+
+Major:
+- Added start program command
+- Added shutdown program command
+- Added flag to set alias to program
+- Added help command

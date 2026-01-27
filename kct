@@ -1,0 +1,95 @@
+#!/usr/bin/bash
+
+set -eu
+
+help() {
+    cat <<EOF 
+KCT
+
+usage: $0 [OPTIONS] <PROGRAM>
+
+Options:
+    -h|--help   Show the usage details
+    -n|--name   Set an alias name
+    -d|--down   Kill the given program
+
+Example:
+    kct discord
+    kct -n hell discord
+    kct -d hell
+    kct -h
+EOF
+}
+
+open() {
+    $@ &> /dev/null &
+    echo $!
+}
+
+down() {
+    kill -9 $(cat /tmp/kct/$1.pid)
+}
+
+savepid() {
+    mkdir -p "/tmp/kct"
+    echo $1 > "/tmp/kct/$2.pid"
+}
+
+stillrunning() {
+    kill -0 "$1" >/dev/null 2>&1
+}
+
+list() {
+    for prog in $(ls /tmp/kct); do
+        pid=$(cat /tmp/kct/$prog)
+
+        if ! $(stillrunning $pid); then
+            rm /tmp/kct/$prog
+            continue
+        fi
+
+        echo "[$pid] $prog"
+    done
+}
+
+if [[ $# -eq 0 ]]; then
+    help
+    exit
+fi
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            help
+            exit
+            ;;
+        -l|--list)
+            list
+            exit
+            ;;
+        -d|--down)
+            DOWN=true
+            shift
+            ;;
+        -n|--name)
+            PROGRAM_ALIAS=$2
+            shift
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+if [[ ! -v PROGRAM_ALIAS ]]; then
+    PROGRAM_ALIAS=$1
+fi
+
+if [[ -v DOWN ]]; then
+    kill -9 $(cat "/tmp/kct/$PROGRAM_ALIAS.pid")
+    exit
+fi
+
+PID=$(open $@)
+savepid $PID $PROGRAM_ALIAS
