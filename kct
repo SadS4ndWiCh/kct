@@ -57,6 +57,8 @@ if [[ $# -eq 0 ]]; then
     exit
 fi
 
+mkdir -p /tmp/kct
+
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -h|--help)
