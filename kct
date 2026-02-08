@@ -54,6 +54,34 @@ list() {
     done
 }
 
+autoupdate() {
+    local src="https://raw.githubusercontent.com/SadS4ndWiCh/kct/refs/heads/main/kct"
+    latestcode=$(curl -s -L $src)
+    if [ ! $? -eq 0 ]; then
+        echo "[*] failed to update"
+        return 0
+    fi
+
+    scriptpath=$(realpath $0)
+    localcode=$(cat $scriptpath)
+
+    checksum=$(echo -n $localcode | sha256sum | awk '{print $1}')
+    latestchecksum=$(echo -n $latestcode | sha256sum | awk '{print $1}')
+
+    if [[ $checksum = $latestchecksum ]]; then
+        echo "[+] already updated"
+        return 1
+    fi
+
+    if [ -w $scriptpath ]; then
+        echo "$latestcode" > $scriptpath
+        echo "[+] new update installed"
+    else
+        echo $latestcode | sudo tee $scriptpath > /dev/null
+        echo "[+] new update installed"
+    fi
+}
+
 if [[ $# -eq 0 ]]; then
     help
     exit
@@ -79,6 +107,10 @@ while [[ "$#" -gt 0 ]]; do
             PROGRAM_ALIAS=$2
             shift
             shift
+            ;;
+        -u|--update)
+            autoupdate
+            exit
             ;;
         *)
             break
