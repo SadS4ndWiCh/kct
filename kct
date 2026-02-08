@@ -17,7 +17,6 @@ Options:
 
 Example:
     kct discord
-    kct -d discord
     kct -n hell discord
     kct -d hell
     kct -u
