@@ -11,10 +11,12 @@ Options:
     -h|--help   Show the usage details
     -n|--name   Set an alias name
     -d|--down   Kill the given program
+    -l|--list   List all opened programs
 
 Example:
     kct discord
     kct --name hell discord
     kct --down hell
+    kct --list
     kct --help
 ```
