@@ -57,7 +57,7 @@ list() {
 }
 
 autoupdate() {
-    local src="https://raw.githubusercontent.com/SadS4ndWiCh/kct/refs/heads/main/kct"
+    local src="https://raw.githubusercontent.com/SadS4ndWiCh/kct/refs/heads/main/kct?cache=$(date +%s)"
     latestcode=$(curl -s -L $src)
     if [ ! $? -eq 0 ]; then
         echo "[*] failed to update"
