@@ -2,6 +2,8 @@
 
 Simple shell script to run progams in background.
 
+_BTW the name was choosed by personal brazilian reasons._
+
 ```
 KCT
 
