@@ -10,10 +10,12 @@ KCT
 usage: kct [OPTIONS] <PROGRAM>
 
 Options:
-    -h|--help   Show the usage details
-    -n|--name   Set an alias name
-    -d|--down   Kill the given program
-    -l|--list   List all opened programs
+    -h|--help       Show the usage details
+    -n|--name       Set an alias name
+    -d|--down       Kill the given program
+    -l|--list       List all opened programs
+    -s|--shutdown   Shutdown all programs
+    -u|--update     Update the script automatically
 
 Example:
     kct discord
