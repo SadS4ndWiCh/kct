@@ -33,7 +33,13 @@ open() {
 }
 
 down() {
-    kill -9 $(cat /tmp/kct/$1.pid)
+    pid=$(cat /tmp/kct/$1)
+
+    if $(stillrunning $pid); then
+        kill -9 $pid
+    fi
+
+    rm /tmp/kct/$1
 }
 
 savepid() {
@@ -60,8 +66,7 @@ list() {
 
 shutdown() {
     for prog in $(ls /tmp/kct); do
-        pid=$(cat /tmp/kct/$prog)
-        kill -9 "$pid"
+        down $prog
     done
 }
 
@@ -138,7 +143,7 @@ if [[ ! -v PROGRAM_ALIAS ]]; then
 fi
 
 if [[ -v DOWN ]]; then
-    kill -9 $(cat "/tmp/kct/$PROGRAM_ALIAS.pid")
+    down $PROGRAM_ALIAS.pid
     exit
 fi
 
